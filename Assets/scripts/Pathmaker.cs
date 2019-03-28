@@ -9,8 +9,15 @@ using UnityEngine;
 // STEP 1: ======================================================================================
 // put this script on a Sphere... it will move around, and drop a path of floor tiles behind it
 
-public class Pathmaker : MonoBehaviour {
+public class Pathmaker : MonoBehaviour
+{
 
+	private int counter = 0;
+	public Transform floorPrefab;
+	public Transform pathmakerSpherePrefab;
+	public float randomNumber;
+	public static int allTiles = 0;
+	
 // STEP 2: ============================================================================================
 // translate the pseudocode below
 
@@ -20,7 +27,7 @@ public class Pathmaker : MonoBehaviour {
 //	Declare a public Transform called pathmakerSpherePrefab, assign the prefab in inspector; 		// you'll have to make a "pathmakerSphere" prefab later
 
 
-	void Update () {
+//	void Update () {
 //		If counter is less than 50, then:
 //			Generate a random number from 0.0f to 1.0f;
 //			If random number is less than 0.25f, then rotate myself 90 degrees;
@@ -33,9 +40,50 @@ public class Pathmaker : MonoBehaviour {
 //			Increment counter;
 //		Else:
 //			Destroy my game object; 		// self destruct if I've made enough tiles already
+//	}
+
+	void Update()
+	{
+		if (counter < 500)
+		{
+			
+		randomNumber = Random.Range(0.0f, 1.0f);
+			
+			if (randomNumber < 0.25f)
+			{
+				transform.Rotate(0, 90, 0);
+			}
+			else if (randomNumber >= 0.25f && randomNumber <= 0.5f)
+			{
+				transform.Rotate(0, -90, 0);
+			}
+			else if (randomNumber >= 0.99f && randomNumber <= 1.0f)
+			{
+				Instantiate(pathmakerSpherePrefab, transform.position, Quaternion.identity);
+			}
+
+			Instantiate(floorPrefab, transform.position, Quaternion.identity);
+			transform.position += transform.forward;
+			counter++;
+			allTiles++;
+			print(allTiles);
+			
+		}
+		else
+		{
+			Destroy(this.gameObject);
+			
+		}
+		if (allTiles >= 500)
+		{
+			Destroy(this.gameObject);
+		}
 	}
 
-} // end of class scope
+
+}
+
+ // end of class scope
 
 // MORE STEPS BELOW!!!........
 
